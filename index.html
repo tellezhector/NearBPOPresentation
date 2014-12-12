@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <style>
+
+	.node {
+	  stroke: #fff;
+	  stroke-width: 1.5px;
+	}
+
+	.link {
+	  stroke: #999;
+	  stroke-opacity: .6;
+	}
+
+  </style>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script type="text/javascript" src="bower_components/Mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <link rel="stylesheet" media="all" href="slides/theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="slides/theme/css/phone.css">
+</head>
+<body style="opacity: 0">
+	<script src="javascript/underscore-min.js"></script>
+	<script data-main="slides/js/slides" src="Slides/js/require-1.0.8.min.js"></script>
+
+<slides class="layout-widescreen">
+
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/logoUNAM.jpg"></span>
+    </article>
+  </slide>
+
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img src="images/nearbpo_logo.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Complejidad computacional</h2>
+    </hgroup>
+    <br>
+	Una manera de medir la eficiencia de un algoritmo.
+	<br>
+	<br>
+	<ul class="build fade">
+        <li>¿Cuántas operaciones requiere el algoritmo con respecto al tamaño de la entrada?</li>
+        <li>¿Qué es una operación?</li>
+    </ul>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Complejidad computacional</h2>
+    </hgroup>
+    <br>
+	Una operación es
+	<ul class="build">
+		<li>asignación</li>
+		<li>comparación</li>
+		<li>operación aritmética</li>
+        <li>operación booleana</li> 
+	</ul>
+  </slide>
+
+   <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+    </hgroup>
+    <br>
+	<pre class="prettyprint">
+int binary_search(int A[], int key)
+{
+  int imin = 0;
+  int imax = A.length;
+  while (imax >= imin)                     //una operación
+  {
+	int imid = midpoint(imin, imax);  //dos operaciones
+	if(A[imid] == key)                //una operación
+	  return imid;                    
+	else if (A[imid] < key)           //una operación
+	  imin = imid + 1;                //una operación
+	else                 
+	  imax = imid - 1;                 //una operación
+  }
+  return KEY_NOT_FOUND;                 
+}
+	</pre>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Complejidad computacional</h2>
+    </hgroup>
+    <br>
+	Dependiendo de la entrada, un algoritmo puede necesitar más o menos operaciones para completarse.
+    <br>
+    <br>
+	Podemos definir una función que dependiendo del tamaño de la entrada nos diga el número de operaciones
+	que necesitará determinado algoritmo.
+  </slide>
+
+   <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+    </hgroup>
+    <br>
+	<pre class="prettyprint">
+int binary_search(int A[], int key)
+{
+  int imin = 0;
+  int imax = A.length;
+  while (imax >= imin)                
+  {
+	int imid = midpoint(imin, imax);  
+	if(A[imid] == key)                
+	  return imid;                    
+	else if (A[imid] < key)           //Si no se encuentra key,
+	  imin = imid + 1;                //la distancia entre imin e imax 
+	else                              //disminuye por la mitad
+	  imax = imid - 1;                 
+  }
+  return KEY_NOT_FOUND;                 
+}
+	</pre>
+	binarySearch es \(O(log(n))\) (léase orden de lógaritmo de \(n\)) donde \(n\)
+	es el tamaño de la entrada (el tamaño del arreglo en esta caso).
+  </slide>
+
+  
+  <slide>
+    <hgroup>
+      <h2>Complejidad computacional:</h2>
+    </hgroup>
+    <br>
+    <br>
+	En análisis asintótico, lo que importa es como cambia el radio o razón de crecimiento.
+	<br>
+    <br>
+	Por ejemplo, los radios de crecimiento de las funciones \(f(n) = n\) y \(g(n) = 2n\) 
+	son constantes, y por lo tanto se considera que son del mismo orden.
+    <br>
+    <br>
+	Pero los radios de crecimiento de las funciones \(f(n) = n\) y \(h(n) = 2^n\). son
+	por un lado \(\frac{n}{2^n} \rightarrow 0\) y por otro lado \(\frac{2^n}{n} \rightarrow \infty\),
+	y por lo tanto \(O(2^n)\) es un orden mucho más grande que \(O(n)\).
+	<br>
+    <br>
+  </slide>
+    
+  <slide>
+    <hgroup>
+      <h2>Complejidad computacional:</h2>
+    </hgroup>
+    <br>
+	A los computólogs les gustan los algoritmos de orden polinomial.
+	(En la industria, polinomial no siempre es suficiente).
+    <br>
+    <br>
+	Recuerden que un polinomio es algo de la forma
+	<br>
+	<br>
+	\(p(n) = a_0 + a_1n + a_2n^2 + a_3n^3 + \dots + a_mn^m\)
+	<br>
+	<br>
+	el grado de un polinomio es el el grado más alto de sus términos,
+	en este caso, el grado es \(m\).
+  </slide>
+    
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+	  (acoplamientos estables)
+    </hgroup>
+    <br>
+	Imagine que existe un conjunto de \(n\) hombres y otro de \(n\) mujeres.
+	Cada hombre tiene una lista de preferencias de las mujeres y cada mujer
+	una lista de preferencias de los hombres.
+  </slide>
+    
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+	  (acoplamientos estables)
+    </hgroup>
+    <br>
+	Queremos asignar parejas sin que queden parejas "inestables", es decir,
+	un hombre y una mujer que se prefieran más entre ellos que a las parejas
+	que se les asignó.
+	<article class="flexbox vcenter">
+      <img src="images/unestableCouple.jpg">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+      Algoritmo Gale-Shapley
+    </hgroup>
+    <br>
+    <pre class="prettyprint" >
+function stableMatching {
+    Initialize all m ∈ M and w ∈ W to free
+    while ∃ free man m who still has a woman w to propose to {
+       w = highest ranked woman to whom m has not yet proposed
+       if w is free
+         (m, w) become engaged
+       else                   // some pair (m_2, w) already exists
+         if w prefers m to m_2
+           (m, w) become engaged
+           m_2 becomes free
+    }
+}
+    </pre>
+	Este algoritmo es en peor caso cuadrático, pues cada hombre
+	podría tener que hacer todas sus \(n\) propuestas y esto para
+	cada uno de los \(n\) hombres, este algoritmo es \(O(n^2)\).
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Clases de problemas</h2>
+    </hgroup>
+	<br>
+	Los problemas que se pueden solucionar en tiempo polinomial,
+	se dice que pertenecen a la clase de problemas \(P\).
+    <br>
+    <br>
+	Existe otra clase de problemas a la que se le llama \(NP\), 
+	esta es la clase de los problemas que se pueden resolver
+	en tiempo polinomial en una computadora que puede "clonarse
+	a sí misma".
+  </slide>
+     
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+	  (de un problema en \(NP\))
+    </hgroup>
+    <br>
+	En una ciudad con \(n\) personas, decir si existen \(k\)
+	que no se conozcan entre sí. Donde (\(2 \leq k \leq n\)).
+    <br>
+    <br>
+	Este problema es conocido como "Independent Set Problem" y no sólo
+	pertenece \(NP\), cualquier otro problema que también pertenezca
+	a \(NP\) puede reducirce a él. A estos problemas se les
+	conoce como \(NP\)-completos. Si pueden encontrar un algoritmo
+	polinomial para solucionar cualquier problema \(NP\)-completo 
+	se ganan un millón de dólares y se vuelven muy famosos.
+  </slide>
+     
+  <slide>
+    <hgroup>
+      <h2>Problemas \(NP\)-completos:</h2>
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/np-completes.png">
+    </article>
+  </slide>
+     
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+    </hgroup>
+    Existen muchas formas de definir un poliedro. Una de las que nos gustan
+	a nosotros es: La región determinada por desigualdades lineales.
+	
+  </slide>
+ 
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_1.png">
+    </article>
+	Por ejemplo, esta es la región determinada por \(y-2x \leq 0\).
+  </slide>
+ 
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_2.png">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_3.png">
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_4.png">
+    </article>
+	¿Y mi poliedro?
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_5.png">
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+	  Desigualdades lineales
+    </hgroup>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron_6.png">
+    </article>
+	Es la intersección de de las regiones.
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Programación Lineal</h2>
+    </hgroup>
+	<br>
+	¿Y esto como resuelve problemas?
+	<br>
+	<br>
+	<ul class="build">
+		<li>Esto resuelve problemas de optimización.</li>
+        <li>Cada desigualdad lineal es una limitante.</li>
+		<li>Dependiendo de lo que se quiera optimizar, a la función que optimiza se le puede asignar una dirección.</li>
+		<li>Encontrar el óptimo se convierte en encontrar el vértice más lejano en determinada dirección.</li> 
+	</ul>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+    </hgroup>
+   	<article class="flexbox vcenter">
+      <img src="images/polyhedron_6.png">
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Poliedros</h2>
+    </hgroup>
+   	<article class="flexbox vcenter">
+      <img src="images/polyhedron_7.png">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ejemplo práctico</h2>
+    </hgroup>
+	<article class="build">
+		A NearBPO le toma tres horas programar una presentación y dos horas debuggearla.
+		Programar un servicio REST le toma cuatro horas y cinco debuggearlo. 
+		Una vista le genera 60 dólares de ganancia y un servicio REST le genera 90.
+		En NearBPO se trabaja sólo 8 horas al día.
+		<br>
+		<br>
+		<div class="centered">
+			\(\max 60x + 90y\)<br>
+			\(3x+4y\leq 8\)<br>
+			\(2x+5y\leq 8\)
+		</div>
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ejemplo práctico</h2>
+    </hgroup>
+    <br>
+	<article class="flexbox vcenter">
+      <img src="images/NearBPO_problem.png">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Más poliedros</h2>
+    </hgroup>
+	<article>
+		Otra forma de definir un poliedro es poniendo un montón de puntos en el
+		espacio y tomar su envolvente convexa. Esto es, como poner un montón
+		de clavos en el espacio y soltar una liga (o un globo). La cubierta
+		que queda es la envolvente convexa. Y la envolvente convexa es un poliedro.
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+	  envolvente convexa.
+    </hgroup>
+    <br>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron2_1.png">
+    </article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+  	  envolvente convexa.
+    </hgroup>
+    <br>
+	<article class="flexbox vcenter">
+      <img src="images/polyhedron2_2.png">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Programación Entera</h2>
+    </hgroup>
+	<article>
+		<br>
+		De nuevo tenemos una ciudad con \(n\) habitantes
+		pero esta vez queremos encontrar el grupo de personas más grande tal
+		que no se conozcan entre sí.
+		<br>
+		<br>
+			Cada habitante puede ser representado en una dimensión distinta.
+			Y cada conjunto de personas puede ser representado por un 
+			vector de unos y ceros dependiendo de si está o no la persona en
+			el conjunto. 
+		<br>
+		<br>
+			e.g. el véctor \((0, 1, 1, 0)\) representa al conjunto que tiene
+			a las personas 2 y 3.
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Programación Entera</h2>
+    </hgroup>
+	<article>
+		<div class="build">
+			<div>
+				Podríamos tomar la envolvente convexa de todos estos y entonces hacer
+				programación lineal sobre él, pero no siempre es fácil describir
+				estas envolventes, de hecho, en el caso general, la de este
+				problema (el de la ciudad donde buscamos personas que no se conozcan) es desconocida.
+			</div>
+			<div>
+				<br>
+				Esta variante se llama programación entera porque esperamos
+				tener respuestas con números enteros. No tiene sentido para nosotros
+				si obtuvieramos una respuesta que nos diga "toma la mitad de la persona 5
+				y tres cuartas partes de la 9".
+			</div>
+		</div>
+	</article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Programación Entera</h2>
+    </hgroup>
+	<article>
+		<div class="build">
+			<div>
+				El problema con esto, es que si no se conoce suficientemente bien
+				la envolvente convexa, es muy probable que terminemos con respuestas
+				fraccionarias.
+			</div>
+		</div>
+	</article>
+  </slide>
+  
+  <slide>
+    <hgroup>
+      <h2>Propiedad de intersección</h2>
+	  Gilberto Calvillo Vives
+    </hgroup>
+    <br>
+	<article>
+		<iframe data-src="http://fox.presidencia.gob.mx/gabinete/?contenido=15075" src="http://fox.presidencia.gob.mx/gabinete/?contenido=15075">
+		</iframe>
+	</article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Propiedad de intersección</h2>
+	  Gilberto Calvillo Vives
+    </hgroup>
+		<div class="build">
+			<div>
+				<br>
+				Con la idea de clasificar problemas, estudió propiedades de intersección de poliedros.
+			</div>
+			<div>			
+				<br>
+				Su contribución (a la que nos enfocamos) dice más o menos: Si el poliedro que buscas 
+				tiene (algunas) rebanadas enteras, entonces el problema que representa no es (tan) difícil.
+			</div>
+			<div>			
+				<br>
+				Mostró que el Independent Set Problem satisface estas condiciones bajo una restricción.				
+				Esto llevó a más tarde dar una solución polinomial para los escenarios que tuvieran
+				esta restricción.
+			</div>
+		</div>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Ejemplo:</h2>
+    </hgroup>
+		<div class="build">
+			<div>
+			<br>
+				Pensemos en el problema de las parejas estables y, cada posible pareja la representamos
+				como la entrada de un vector de ceros y unos (cero si no asignamos esa pareja y uno si sí).
+			</div>
+			<div>
+			<br>
+				Por un lado, tomemos aquellos en los que a cada hombre únicamente le toca una mujer.
+				Estos generan un poliedro.
+			</div>
+			<div>
+			<br>
+				Por otro lado, tomemos aquellos en los que a cada mujer únicamente le toca un un hombre.
+				Estos generan otro poliedro.
+			</div>
+			<div>
+			<br>
+				La intersección de estos dos poliedros es el poliedro de los acoplamientos posibles.
+				Este resulta tener la propiedad de intersección de Gilberto Calvillo y por lo tanto
+				resulta no ser tan difícil.
+			</div>
+			<div>
+			<br>
+				Esto no es nada nuevo, este problema es polinomial y es sabido desde hace mucho tiempo.
+			</div>
+		</div>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Propiedad de intersección</h2>
+    </hgroup>
+    		<div class="build">
+			<div>
+				<br>
+				Lo interesante es que siempre que se ha encontrado la propiedad de intersección
+				se ha llegado a un problema con solución polinomial. 
+			</div>
+			<div>
+				<br>
+				Mi trabajo de investigación se centró básicamente en este hecho y cómo se relaciona 
+				con la teoría de matroides y polimatroides.			
+			</div>
+		</div>
+  </slide>
+
+
+  <slide class="dark nobackground">
+    <hgroup>
+      <span>Eso es todo. Gracias.</span>
+    </hgroup>
+	<article class="flexbox vcenter" width="80%">
+	  <img src="http://i.imgur.com/qoeqv.gif">
+	  <img src="http://img.pandawhale.com/45018-Billy-Dee-Williams-clapping-gi-87wh.gif">
+	  <img src="http://weknowgifs.com/wp-content/uploads/2013/03/obama-clapping-gif.gif">
+	  <img src="http://media.tumblr.com/f299c07abafce0f3f81ffb43bf30d1f2/tumblr_inline_ml6iswZWcb1qz4rgp.gif">
+	  <img src="http://cdn1.smosh.com/sites/default/files/ftpuploads/bloguploads/sarcastic-clapping-captain-picard.gif">
+    </article>
+  </slide>
+  
+<slide class="dark nobackground">
+    <article class="flexbox vcenter">
+	  De la página (i) de mi trabajo:
+	  <img src="images/ackowledgments.png" width="100%">
+    </article>
+</slide>
+
+    <!--    -->
+
+  <slide class="backdrop"></slide>
+</slides>
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
